@@ -62,5 +62,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.before(:suite) do
-  DatabaseCleaner.clean_with(:truncation)
+    DatabaseCleaner.clean_with(:truncation)
+  end
 end
