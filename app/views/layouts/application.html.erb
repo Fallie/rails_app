@@ -13,14 +13,23 @@
       <div class="container">
         <%= link_to "Rails App", '#', id: "logo" %>
         <nav>
+          <ul class="nav navbar-nav navbar-left">
+            <% if signed_in? %>
+              <li style="padding-top: 20px; color: #D3D3D3">Signed in as: <%= current_user.email %></li>
+            <% end %>
+          </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to "Home",   root_path %></li>
-            <li><%= link_to "Log in", '#' %></li>
-            <li><%= link_to "Sign up", '#' %></li>
+            <li><%= link_to "Home",   home_path %></li> 
+            <li><% if signed_in? %>
+               <%= link_to 'Sign out', sign_out_path, method: :delete %>
+            <% else %>
+                   <%= link_to 'Sign in', sign_in_path %>
+            <% end %></li>
           </ul>
         </nav>
       </div>
     </header>
+    
    <div class="container">
       <%= yield %>
     </div>
