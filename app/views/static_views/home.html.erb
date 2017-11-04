@@ -8,6 +8,8 @@
     
   </h2>
 
-  <%= link_to "Sign up now!", '#', class: "btn btn-lg btn-primary" %>
+  <% if signed_out? %>
+  	<%= link_to "Sign up now!", '#', class: "btn btn-lg btn-primary" %>
+  <% end %>
 </div>
 
