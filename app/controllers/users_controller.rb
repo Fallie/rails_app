@@ -1,7 +1,12 @@
 class UsersController < Clearance::UsersController
-  before_action :set_user, only: [:show, :edit, :update]
-  before_action :check_user, only: [:edit, :update]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :check_user, only: [:show, :edit, :update]
 
+
+  def index
+  
+   @users = User.all
+  end
 
   def new
     @user = User.new
@@ -9,12 +14,16 @@ class UsersController < Clearance::UsersController
 
   def create
     @user = user_from_params
-    @user.role = role if role
-    if @user.save
-      sign_in @user
-      redirect_back_or url_after_create
-    else
-      render template: "users/new"
+
+    respond_to do |format|
+      if @user.save
+        sign_in @user
+        format.html { redirect_back_or url_after_create }
+        format.json { render :show, status: :created, location: @user }
+      else
+        format.html { render :new }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -27,17 +36,31 @@ class UsersController < Clearance::UsersController
   end
 
   def update
-    if @user.update(user_params)
-      redirect_to root_path
-    else
-      render 'users/edit'
+  
+    respond_to do |format|
+      if @user.update(user_params)
+
+        format.html { redirect_to root_path}
+        format.json { render :show, status: :ok, location: @user }
+      else
+        format.html { render :edit }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def destroy
+    @user.destroy
+    respond_to do |format|
+      format.html { redirect_to users_url}
+      format.json { head :no_content }
     end
   end
 
   private
 
   def check_user  
-    raise 'error' if current_user.id != params[:id]
+    not_found  if current_user.id != params[:id].to_i
   end
 
   def set_user
@@ -48,7 +71,4 @@ class UsersController < Clearance::UsersController
     params.require(:user).permit(:name, :email, :password, :password_confirmation, :role)
   end
 
-  def role
-    params[:user][:role]
-  end
 end

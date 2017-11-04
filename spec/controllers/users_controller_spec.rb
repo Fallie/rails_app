@@ -55,6 +55,54 @@ RSpec.describe UsersController, type: :controller do
 
   end
 
+  describe 'PUT #update' do
+    let(:password_confirmation) {'password'}
+    subject{ put :update,  params:
+      {
+        id: 1,
+        user: {
+            name: 'new',
+            email: 'new@gmail.com',
+            password: 'password',
+            password_confirmation: password_confirmation,
+          }
+      }}
+    before do
+      sign_in_as(create(:test_user))
+    end
+      
+    it 'updates users name' do
+      subject
+      expect(User.first.name).to eq 'new'
+    end
+
+    it 'updates users email' do
+      subject
+      expect(User.first.email).to eq 'new@gmail.com'
+    end
+
+    it 'returns http success' do
+      subject
+      expect(response).to have_http_status(302)
+    end
+
+    
+
+    context 'fail to update' do
+      let(:password_confirmation) {''}
+      it 'stay at the same page' do
+        subject
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'fail to update the user' do
+        subject
+        expect(User.first.name).not_to eq 'new'
+      end
+    end
+
+  end
+
 
 
 end
