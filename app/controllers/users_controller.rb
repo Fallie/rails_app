@@ -1,4 +1,10 @@
 class UsersController < Clearance::UsersController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  
+
+  def new
+    @user = User.new
+  end
 
   def create
     @user = user_from_params
@@ -11,7 +17,7 @@ class UsersController < Clearance::UsersController
       render template: "users/new"
     end
   end
-  
+
   private
 
   def user_params
