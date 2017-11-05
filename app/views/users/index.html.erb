@@ -1,0 +1,41 @@
+<h1>Users</h1>
+
+<ul class="users">
+
+  <table>
+    <thead>
+      <tr>
+        <th><div style="width: 250px">Name</div></th>
+        <th><div style="width: 250px">Email</div></th>
+        <th><div style="width: 150px">Role</div></th>
+        <th><div style="width: 350px">Created At</div></th>
+      </tr>
+    </thead>
+  </table>
+  <% @users.each do |user| %>
+    <li>
+      <table>
+         <tbody style="color: #484848; font-size: 15px">
+              <tr>
+                <td>
+                  <div style="width: 250px"><%= user.name %></div>
+                </td>
+                <td>
+                  <div style="width: 250px"><%= user.email %></div>
+                </td>
+                <td>
+                  <div style="width: 150px"><%= user.role %></div>
+                </td>
+                <td>
+                  <div style="width: 350px"><%= user.created_at %></div>
+                </td>
+                <td>
+                  <div style="width: 10px"><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></div>
+                </td>
+              </tr>
+          </tbody>
+      </table>
+    </li>
+  <% end %>
+</ul>
+<div style="text-align: center;"><%= will_paginate %></div>
