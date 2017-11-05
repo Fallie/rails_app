@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171104103342) do
+ActiveRecord::Schema.define(version: 20171105022557) do
+
+  create_table "appointments", force: :cascade do |t|
+    t.datetime "appointment_time"
+    t.integer "duration", limit: 4
+    t.integer "doctor_id", limit: 4
+    t.integer "patient_id", limit: 4
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["doctor_id"], name: "index_appointments_on_doctor_id"
+    t.index ["patient_id"], name: "index_appointments_on_patient_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -21,6 +32,9 @@ ActiveRecord::Schema.define(version: 20171104103342) do
     t.string "confirmation_token", limit: 128
     t.string "remember_token", limit: 128
     t.string "role"
+    t.string "location"
+    t.string "postcode"
+    t.string "phone_number"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_token"], name: "index_users_on_remember_token"
   end
