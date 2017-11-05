@@ -14,4 +14,8 @@ module ApplicationHelper
 		end	
 	end
 
+	def is_root_user(user)
+		user.id == 1
+	end
+
 end
