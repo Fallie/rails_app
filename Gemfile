@@ -37,6 +37,8 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'clearance', '~> 1.16.1'
+gem 'will_paginate',           '3.1.5'
+gem 'bootstrap-will_paginate', '1.0.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -47,6 +49,7 @@ group :development, :test do
   gem "database_cleaner"
   gem "rspec-rails"
   gem 'factory_bot_rails'
+  gem 'faker'         
 end
 
 group :development do

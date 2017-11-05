@@ -1,11 +1,16 @@
 class UsersController < Clearance::UsersController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_user, only: [:show, :edit, :update, :destroy]
+  before_action :check_user, only: [:show, :edit, :update,]
 
 
   def index
     check_root_user
-    @users = User.all
+    @users = User.where.not(id: 1)
+    @users = @users.paginate(page: params[:page], per_page: 20)
+    respond_to do |format|
+      format.html
+      format.json { render json: @users }
+    end 
   end
 
   def new
@@ -59,7 +64,7 @@ class UsersController < Clearance::UsersController
   end
 
   private
-  
+
   def check_root_user  
     not_found  if current_user.id != 1
   end
