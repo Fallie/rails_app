@@ -19,7 +19,10 @@ RSpec.describe UsersController, type: :controller do
           email: 'test@gmail.com',
           password: password,
           password_confirmation: password_confirmation,
-          role: 'patient'
+          role: 'patient',
+          phone_number: '0445555555',
+          location: '1 Park St, Docklands, VIC',
+          postcode: '3009'
         }
       }
   	end
@@ -86,8 +89,6 @@ RSpec.describe UsersController, type: :controller do
       expect(response).to have_http_status(302)
     end
 
-    
-
     context 'fail to update' do
       let(:password_confirmation) {''}
       it 'stay at the same page' do
@@ -101,6 +102,22 @@ RSpec.describe UsersController, type: :controller do
       end
     end
 
+  end
+
+  describe 'GET #index' do
+
+    it "returns http success" do
+      sign_in_as(create(:test_user))
+      get :index
+      expect(response).to have_http_status(:success)
+    end
+
+    context 'fail to view index' do
+      it 'not the root user' do
+        sign_in_as(create(:second_test_user))
+        expect{ get :index }.to raise_error ActionController::RoutingError
+      end
+    end
   end
 
 

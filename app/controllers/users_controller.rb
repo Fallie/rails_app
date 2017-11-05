@@ -1,11 +1,11 @@
 class UsersController < Clearance::UsersController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_user, only: [:show, :edit, :update]
+  before_action :check_user, only: [:show, :edit, :update, :destroy]
 
 
   def index
-  
-   @users = User.all
+    check_root_user
+    @users = User.all
   end
 
   def new
@@ -59,6 +59,10 @@ class UsersController < Clearance::UsersController
 
   private
 
+def check_root_user  
+    not_found  if current_user.id != 1
+  end
+
   def check_user  
     not_found  if current_user.id != params[:id].to_i
   end
@@ -68,7 +72,8 @@ class UsersController < Clearance::UsersController
   end
 
   def user_params
-    params.require(:user).permit(:name, :email, :password, :password_confirmation, :role)
+    params.require(:user).permit(:name, :email, :password, :password_confirmation, 
+                                 :role, :phone_number, :location, :postcode)
   end
 
 end
