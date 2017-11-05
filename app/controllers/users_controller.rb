@@ -66,11 +66,11 @@ class UsersController < Clearance::UsersController
   private
 
   def check_root_user  
-    not_found  if current_user.id != 1
+    not_found  if !current_user || current_user.id != 1
   end
 
   def check_user  
-    not_found  if current_user.id != params[:id].to_i
+    not_found  if !current_user || current_user.id != params[:id].to_i
   end
 
   def set_user
