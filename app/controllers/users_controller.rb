@@ -50,6 +50,7 @@ class UsersController < Clearance::UsersController
   end
 
   def destroy
+    check_root_user
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url}
@@ -58,8 +59,8 @@ class UsersController < Clearance::UsersController
   end
 
   private
-
-def check_root_user  
+  
+  def check_root_user  
     not_found  if current_user.id != 1
   end
 

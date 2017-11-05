@@ -84,7 +84,7 @@ RSpec.describe UsersController, type: :controller do
       expect(User.first.email).to eq 'new@gmail.com'
     end
 
-    it 'returns http success' do
+    it 'returns http redirect' do
       subject
       expect(response).to have_http_status(302)
     end
@@ -120,6 +120,27 @@ RSpec.describe UsersController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy' do
+
+      it "returns http redirect" do
+        sign_in_as(create(:test_user))
+        delete :destroy, params: { id: 1 }
+        expect(response).to have_http_status(302)
+      end
+
+      context 'fail to destory user' do
+        it 'not the root user' do
+          create(:test_user)
+          sign_in_as(create(:second_test_user))
+          expect{ delete :destroy, params: { id: 1 } }.to raise_error ActionController::RoutingError
+        end
+
+        it 'user not exist' do
+          sign_in_as(create(:test_user))
+          expect{ delete :destroy, params: { id: 2 } }.to raise_error ActiveRecord::RecordNotFound
+        end
+      end
+  end
 
 
 end
