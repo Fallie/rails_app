@@ -1,5 +1,6 @@
 <%= render partial: "layouts/errors", locals: { object: appointment } %>
 <%= form_for appointment do |f| %>
+<%= doctor_fields(f, appointment) %>
   <div class="field">
     <p>
       <%= label_tag "appointment[appointment_time][date]", "Date" %>
