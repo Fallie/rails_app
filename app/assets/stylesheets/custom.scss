@@ -122,3 +122,9 @@ input {
 .col4 {
   width: 10px
 }
+
+@media screen and (max-width: 768px) {
+   .patient .btn-secondary, .patient .btn-danger {
+        margin-top: 20px;
+    } 
+}
