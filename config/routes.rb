@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :appointments
+  
   get 'users/new'
 
   #Root
