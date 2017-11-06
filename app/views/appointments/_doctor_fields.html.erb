@@ -1,0 +1,8 @@
+<% if User.doctors.any? %>
+<div class="field">
+  <p>
+    <%= label_tag :doctor %>
+    <%= collection_select :appointment, :doctor_id, User.doctors, :id, :name, { prompt: true } %>
+  </p>
+</div>
+<% end %>
