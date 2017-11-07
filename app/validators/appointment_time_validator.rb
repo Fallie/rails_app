@@ -4,17 +4,20 @@ class AppointmentTimeValidator < ActiveModel::Validator
   def initialize(appointment)
     @appointment = appointment
     @doctor = appointment.doctor
-   end
+    @patient = appointment.patient
+  end
 
   def validate
-    # selects the user’s appointments from yesterday,
-    # today and tomorrow
-    appointments = @doctor.user_appointments.select { |a|
-      a.appointment_time.midnight == @appointment.appointment_time.midnight || 
-      a.appointment_time.midnight == @appointment.appointment_time - 1.day || 
-      a.appointment_time.midnight == @appointment.appointment_time + 1.day 
+
+    appointments_doctor = @doctor.user_appointments.select { |a|
+      a.appointment_time.midnight == @appointment.appointment_time.midnight 
     }
 
+    appointments_patient = @patient.user_appointments.select { |a|
+      a.appointment_time.midnight == @appointment.appointment_time.midnight 
+    }
+
+    appointments = appointments_doctor + appointments_patient
     # makes sure that current appointments don’t overlap
     # first checks if an existing appointment is still
     # in progress when the new appointment is set to start
@@ -31,5 +34,5 @@ class AppointmentTimeValidator < ActiveModel::Validator
       end
     end
   end
-end # End AppointmentTimeValidator
+end
   
