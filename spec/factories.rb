@@ -3,16 +3,9 @@ FactoryBot.define do
 
     factory :test_appointment, :class => Appointment do
 
-      trait :appointment_time do
-        date '11/09/2017'
-        hour '16'
-        min '00'
-      end
-
-      trait :duration do
-        hour '0'
-        min '1800'
-      end
+      appointment_time '2017-11-10 09:00:00'
+      duration '1800'
+      patient_id 2
       doctor_id 3
     end
 
