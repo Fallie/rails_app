@@ -14,7 +14,6 @@ FactoryBot.define do
         min '1800'
       end
       doctor_id 3
-      appointment Appointment.new
     end
 
     factory :test_user, :class => User do
