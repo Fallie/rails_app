@@ -5,6 +5,10 @@ class AppointmentsController < ApplicationController
 
   def index
     @upcoming_appointments = current_user.upcoming_appointments.paginate(page: params[:page], per_page: 2)
+    respond_to do |format|
+      format.html
+      format.json { render json: @users }
+    end 
     
   end
 
@@ -14,15 +18,22 @@ class AppointmentsController < ApplicationController
   end
 
   def create
+
     if current_user.is_patient
       @appointment = Appointment.new(appointment_params.merge(patient_id: current_user.id))
-      if @appointment.valid?
-        @appointment.save
-        redirect_to appointments_path
-      else 
-        @appointment.doctor_id = nil
-        @appointments = current_user.user_appointments.select { |a| a.persisted? }
-        render :new
+      respond_to do |format|
+        if @appointment.valid?
+          not_found
+          @appointment.save
+          format.html { redirect_to appointments_path }
+          format.json { render :show, status: :created, location: @appointment }
+
+        else 
+          @appointment.doctor_id = nil
+          @appointments = current_user.user_appointments.select { |a| a.persisted? }
+          format.html { render :new }
+          format.json { render json: @appointment.errors, status: :unprocessable_entity }
+        end
       end
     else
       not_found

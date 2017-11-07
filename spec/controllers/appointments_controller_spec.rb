@@ -16,25 +16,19 @@ RSpec.describe AppointmentsController, type: :controller do
     end
   end
 
-  describe "GET #create" do
-    it "returns http success" do
-    #   put :create
-    #   expect(response).to have_http_status(302)
+  describe "POST #create" do
+
+    context 'fails to create user' do
+        it 'not the patient' do
+          create(:second_test_user)
+          user = create(:third_test_user)
+          attrs = attributes_for(:test_appointment)
+          sign_in_as(user)
+          expect{ post :create, params: attrs }.to raise_error ActionController::RoutingError
+        end
     end
   end
 
-  describe "GET #update" do
-    it "returns http success" do
-      # post :update
-      # expect(response).to have_http_status(302)
-    end
-  end
 
-  describe "GET #destroy" do
-    it "returns http success" do
-      # delete :destroy
-      # expect(response).to have_http_status(302)
-    end
-  end
 
 end
