@@ -7,7 +7,7 @@ class AppointmentsController < ApplicationController
     @upcoming_appointments = current_user.upcoming_appointments.paginate(page: params[:page], per_page: 2)
     respond_to do |format|
       format.html
-      format.json { render json: @users }
+      format.json { render json: @upcoming_appointments }
     end 
     
   end
@@ -40,11 +40,17 @@ class AppointmentsController < ApplicationController
   end
 
   def update
-    if @appointment.update(appointment_params)
-      redirect_to appointments_path
-    else 
-      set_appointments
-      render :edit
+ 
+    respond_to do |format|
+      if @appointment.update(appointment_params)
+
+        format.html { redirect_to appointments_path}
+        format.json { render :show, status: :ok, location: @appointment }
+      else
+        set_appointments
+        format.html { render :edit }
+        format.json { render json: @appointment.errors, status: :unprocessable_entity }
+      end
     end
   end
 
