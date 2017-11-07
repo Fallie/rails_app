@@ -44,6 +44,18 @@ FactoryBot.define do
       postcode '3009'
     end
 
+    factory :fourth_test_user, :class => User do
+      id 4
+      name 'test4'
+      email 'test4@gmail.com'
+      password '123'
+      password_confirmation '123'
+      role 'doctor'
+      phone_number '0445555555'
+      location '1 Park St, Docklands, VIC'
+      postcode '3009'
+    end
+
 
 
 end

@@ -58,6 +58,40 @@ RSpec.describe UsersController, type: :controller do
 
   end
 
+  describe 'GET #show' do
+
+    it 'shows doctors' do
+      patient = create(:second_test_user)
+      doctor = create(:third_test_user)
+      sign_in_as patient
+      get :show, params: {id: 3}
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'shows patient to linked doctor' do
+      create(:second_test_user)
+      doctor = create(:third_test_user)
+      create(:test_appointment)
+      
+      sign_in_as doctor
+      get :show, params: {id: 2}
+      expect(response).to have_http_status(:success)
+    end
+
+    context 'not shows patient to anyone' do
+
+      it 'not shows patient to unlinked doctor' do
+        create(:second_test_user)
+        doctor = create(:fourth_test_user)
+        create(:third_test_user)
+        create(:test_appointment)
+        
+        sign_in_as doctor
+        expect{get :show, params: { id: 2 }}.to raise_error ActionController::RoutingError
+      end
+    end
+  end
+
   describe 'PUT #update' do
     let(:password_confirmation) {'password'}
     subject{ put :update,  params:
@@ -112,12 +146,6 @@ RSpec.describe UsersController, type: :controller do
       expect(response).to have_http_status(:success)
     end
 
-    context 'fail to view index' do
-      it 'not the root user' do
-        sign_in_as(create(:second_test_user))
-        expect{ get :index }.to raise_error ActionController::RoutingError
-      end
-    end
   end
 
   describe 'DELETE #destroy' do
