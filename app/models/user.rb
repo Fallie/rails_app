@@ -28,7 +28,7 @@ class User < ApplicationRecord
 		if user_appointments == nil
 			nil
 		else
-	      user_appointments.order(appointment_time: :desc).select { |a| 
+	      user_appointments.order(:appointment_time).select { |a| 
 	        a.appointment_time > (DateTime.now) 
 	      }
 	  	end
