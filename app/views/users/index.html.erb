@@ -1,4 +1,9 @@
-<h1>Users</h1>
+<% if is_root_user(current_user) %>
+  <h1>Users</h1>
+<% elsif !is_root_user(current_user)%>
+  <h1>Doctors</h1>
+<% end %>
+
 
 <ul class="users">
 
@@ -8,7 +13,13 @@
         <th><div class="col1">Name</div></th>
         <th><div class="col1">Email</div></th>
         <th><div class="col2">Role</div></th>
-        <th><div class="col3">Created At</div></th>
+        <th>
+          <% if is_root_user(current_user) %>
+            <div class="col3">Created At</div>
+          <% elsif !is_root_user(current_user)%>
+            <div class="col3">Location</div>
+          <% end %>
+        </th>
       </tr>
     </thead>
   </table>
@@ -18,7 +29,7 @@
          <tbody style="color: #484848; font-size: 15px">
               <tr>
                 <td>
-                  <div class="col1""><%= user.name %></div>
+                  <div class="col1""><%= link_to user.name, user, method: :get %></div>
                 </td>
                 <td>
                   <div class="col1"><%= user.email %></div>
@@ -27,10 +38,16 @@
                   <div class="col2"><%= user.role %></div>
                 </td>
                 <td>
-                  <div class="col3"><%= user.created_at %></div>
+                  <% if is_root_user(current_user) %>
+                    <div class="col3"><%= user.created_at %></div>
+                  <% elsif !is_root_user(current_user) %>
+                    <div class="col3"><%= user.location %></div>
+                  <% end %>
                 </td>
                 <td>
-                  <div class="col4"><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></div>
+                  <% if is_root_user(current_user) %>
+                    <div class="col4"><%= link_to 'Delete', user, method: :delete, data: { confirm: 'Are you sure?' } %></div>
+                  <% end %>
                 </td>
               </tr>
           </tbody>

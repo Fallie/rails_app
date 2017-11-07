@@ -22,7 +22,11 @@ module AppointmentsCalendarHelper
   end
   
   def appointment_text(appointment)
-    "<span class='name'>#{appointment.doctor.name}</span>#{at_location(appointment)}".html_safe
+    if current_user.is_patient
+      "<span class='name'>#{appointment.doctor.name}</span>#{at_location(appointment)}".html_safe
+    elsif current_user.is_doctor
+      "<span class='name'>#{appointment.patient.name}</span>#{at_location(appointment)}".html_safe
+    end   
   end
   
   def from_to(appointment)

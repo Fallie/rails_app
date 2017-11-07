@@ -1,11 +1,11 @@
 class UsersController < Clearance::UsersController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :check_user, only: [:show, :edit, :update,]
+  before_action :check_user, only: [:edit, :update,]
 
 
   def index
-    check_root_user
     @users = User.where.not(id: 1)
+    @users = @users.where(role: 'doctor') if current_user.id != 1
     @users = @users.paginate(page: params[:page], per_page: 20)
     respond_to do |format|
       format.html
@@ -34,6 +34,12 @@ class UsersController < Clearance::UsersController
 
   def show
     set_user
+    #Only patient that made appointment with the doctor can be seen by the doctor.
+    if @user.is_patient && current_user.is_doctor
+      can_view = false
+      @user.user_appointments.select { |x, y| can_view = true if x.doctor_id == current_user.id}
+      not_found if !can_view
+    end
   end
 
   def edit

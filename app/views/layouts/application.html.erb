@@ -17,9 +17,13 @@
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><%= link_to "Home",   home_path %></li> 
-            <li><%= link_to "Appointments",   appointments_path %></li> 
+            <% if current_user && !is_root_user(current_user) %>
+              <li><%= link_to "Appointments",   appointments_path %></li> 
+            <% end %>
             <% if current_user && is_root_user(current_user) %>
               <li><%= link_to "Users",  users_path %></li> 
+              <% elsif current_user && !is_root_user(current_user) %>
+              <li><%= link_to "Doctors",  users_path %></li> 
             <% end %>
             <% if signed_in? %>
               <li class="dropdown">

@@ -16,9 +16,9 @@
 	              <tr>
 	                <td>
 	                  <% if current_user.is_patient %>
-	                  	<div class="col2"">With: <%= appointment.doctor.name %></div>
+	                  	<div class="col2"">With: <%= link_to appointment.doctor.name, appointment.doctor, method: :get %></div>
 	                  <% else %>
-	                  	<div class="col2"">With: <%= appointment.patient.name %></div>
+	                  	<div class="col2"">With: <%= link_to appointment.patient.name, appointment.patient, method: :get %></div>
 	                  <% end %>
 	                </td>
 	                <td>
@@ -40,3 +40,5 @@
 <% else %> 
   <p>No appointments yet.</p>
 <% end %>
+
+<br><br><br><br><br><br><br><br><br>
