@@ -123,6 +123,10 @@ input {
   width: 10px
 }
 
+.col5 {
+  width: 100px
+}
+
 @media screen and (max-width: 768px) {
    .patient .btn-secondary, .patient .btn-danger {
         margin-top: 20px;

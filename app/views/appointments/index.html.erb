@@ -1,9 +1,42 @@
-<h1>Appointments <%= link_to "+ New", new_appointment_path %></h1>
+<h1>Appointments
+	<% if current_user.is_patient %>
+ 		<%= link_to "+ New", new_appointment_path %>
+	<% end %>
+</h1>
 <%= add_weekly_calendar(@appointments) %>
-
-<h3>Upcoming Appointments</h3>
+<br>
+<h1>Upcoming Appointments</h1>
+<div style="text-align: center;"><%= will_paginate @upcoming_appointments %></div>
 <% if @upcoming_appointments.any? %>
-  <%= render @upcoming_appointments %>
+  <% @upcoming_appointments.each do |appointment| %>
+	  <ul class="users">
+	    <li>
+	      <table id='table'>
+	         <tbody style="color: #484848; font-size: 15px">
+	              <tr>
+	                <td>
+	                  <% if current_user.is_patient %>
+	                  	<div class="col2"">With: <%= appointment.doctor.name %></div>
+	                  <% else %>
+	                  	<div class="col2"">With: <%= appointment.patient.name %></div>
+	                  <% end %>
+	                </td>
+	                <td>
+	                  <div class="col3"><%= full_time(appointment) %></div>
+	                </td>
+	                <td>
+	                  <div class="col1"><%= show_location(appointment) %></div>
+	                </td>
+	                <td>
+	                  <div class="col4"><%= appointment_edit_delete_links(appointment) %></div>
+	                </td>
+	              </tr>
+	          </tbody>
+	      </table>
+	    </li>
+       </ul>
+  	<% end %>
+
 <% else %> 
   <p>No appointments yet.</p>
 <% end %>

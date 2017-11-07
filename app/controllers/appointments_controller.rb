@@ -4,8 +4,8 @@ class AppointmentsController < ApplicationController
   before_action :set_appointments, only: [:index, :show, :edit]
 
   def index
-    @upcoming_appointments = current_user.upcoming_appointments
-    # @upcoming_appointments = Appointment.all
+    @upcoming_appointments = current_user.upcoming_appointments.paginate(page: params[:page], per_page: 2)
+    
   end
 
   def new
@@ -44,7 +44,7 @@ class AppointmentsController < ApplicationController
   end
 
   private 
-  
+
   def set_appointment
         
     @appointment = Appointment.find(params[:id])
