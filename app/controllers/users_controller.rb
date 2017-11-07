@@ -40,6 +40,11 @@ class UsersController < Clearance::UsersController
       @user.user_appointments.select { |x, y| can_view = true if x.doctor_id == current_user.id}
       not_found if !can_view
     end
+
+    respond_to do |format|
+        format.html 
+        format.json { render :show, status: :ok, location: @user }
+    end
   end
 
   def edit
